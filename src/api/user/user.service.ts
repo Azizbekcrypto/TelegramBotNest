@@ -27,4 +27,19 @@ export class UserService {
     user.holat = 'tayyor';
     return this.repo.save(user);
   }
+
+  // 5-dars: pitsa tanlandi — manzil kutiladi
+  async tanlovQoy(user: User, tanlov: string): Promise<User> {
+    user.tanlov = tanlov;
+    user.manzil = null;
+    user.holat = 'manzil_kutilmoqda';
+    return this.repo.save(user);
+  }
+
+  // 5-dars: manzil keldi — buyurtma tayyor
+  async manzilQoy(user: User, manzil: string): Promise<User> {
+    user.manzil = manzil;
+    user.holat = 'tayyor';
+    return this.repo.save(user);
+  }
 }

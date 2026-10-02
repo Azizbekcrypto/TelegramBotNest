@@ -11,5 +11,12 @@ export class User extends BaseEntity {
   ism: string | null;
 
   @Column({ type: 'varchar', default: 'yangi' })
-  holat: string; // 'yangi' → 'ism_kutilmoqda' → 'tayyor'
+  holat: string; // 'yangi' → 'ism_kutilmoqda' → 'tayyor' → 'manzil_kutilmoqda' (5-dars)
+
+  // 5-dars: AvtoPizza namunasi — tanlangan pitsa va manzil
+  @Column({ type: 'varchar', nullable: true })
+  tanlov: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  manzil: string | null;
 }
