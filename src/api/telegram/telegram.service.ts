@@ -1,8 +1,10 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { Context, Markup, Telegraf } from 'telegraf';
+import type { Update } from 'telegraf/types';
 import { config } from '../../config';
 import { UserService } from '../user/user.service';
 import { AiService } from '../ai/ai.service';
+import { BuyurtmaService } from '../buyurtma/buyurtma.service';
 
 // 5-dars namunasi: AvtoPizza. O'quvchining boti boshqa g'oyada bo'ladi — tuzilma shu.
 const PITSALAR: Record<string, string> = {
@@ -18,6 +20,7 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
   constructor(
     private readonly users: UserService,
     private readonly ai: AiService,
+    private readonly buyurtmalar: BuyurtmaService,
   ) {}
 
   async onModuleInit() {
@@ -82,6 +85,26 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
       await ctx.reply(`${nom} — buyurtma qabul qilindi. Manzilingizni yozing.`);
     });
 
+    // 7-dars: /buyurtmalarim — bazadagi oxirgi 3 ta buyurtma
+    this.bot.command('buyurtmalarim', async (ctx) => {
+      const list = await this.buyurtmalar.oxirgilar(ctx.from.id);
+      if (!list.length) {
+        await ctx.reply("Hali buyurtma yo'q. /menu dan tanlang.");
+        return;
+      }
+      const p2 = (n: number) => String(n).padStart(2, '0');
+      const sana = (d: Date) =>
+        `${p2(d.getDate())}.${p2(d.getMonth() + 1)} ${p2(d.getHours())}:${p2(d.getMinutes())}`;
+      await ctx.reply(
+        list
+          .map(
+            (b, i) =>
+              `${i + 1} · ${b.pitsa} · ${b.manzil} · ${sana(b.created_at)}`,
+          )
+          .join('\n'),
+      );
+    });
+
     // /buyurtma va «📦 Buyurtma» — oxirgi buyurtma
     const buyurtma = async (ctx: Context) => {
       if (!ctx.from) return;
@@ -116,6 +139,7 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
       }
       if (user.holat === 'manzil_kutilmoqda') {
         await this.users.manzilQoy(user, matn);
+        await this.buyurtmalar.yoz(ctx.from.id, user.tanlov ?? '', matn); // 7-dars: alohida jadvalga
         await ctx.reply(
           `Buyurtma tasdiqlandi: ${user.tanlov} · ${user.manzil}`,
         );
@@ -126,6 +150,24 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
       await ctx.reply(aiJavob ?? 'Bu buyruqni bilmayman. /menu ni bosing.');
     });
 
+    // 7-dars: xato bo'lsa bot jim qolmaydi — mijozga uzr, konsolga sabab
+    this.bot.catch(async (err, ctx) => {
+      console.error('Bot xatosi:', err);
+      try {
+        await ctx.reply('Uzr, birozdan keyin qayta yozing.');
+      } catch {
+        // javob ham ketmasa — faqat konsol
+      }
+    });
+
+    // 7-dars: serverda webhook (Telegram o'zi yuboradi), laptopda polling (bot o'zi so'raydi)
+    if (config.WEBHOOK_URL) {
+      this.bot.telegram
+        .setWebhook(`${config.WEBHOOK_URL}/telegram`)
+        .then(() => console.log('Telegram bot ulandi (webhook)'))
+        .catch((e: Error) => console.error("Webhook o'rnatilmadi:", e.message));
+      return;
+    }
     this.bot
       .launch(() => console.log('Telegram bot ulandi'))
       .catch((e: Error) =>
@@ -135,6 +177,11 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
           '— README, «Xatolar» jadvali',
         ),
       );
+  }
+
+  // Webhook: controller kelgan update'ni shu yerga beradi
+  handleUpdate(update: Update) {
+    return this.bot.handleUpdate(update);
   }
 
   onModuleDestroy() {
