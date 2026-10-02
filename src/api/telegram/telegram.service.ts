@@ -7,11 +7,16 @@ import { AiService } from '../ai/ai.service';
 import { BuyurtmaService } from '../buyurtma/buyurtma.service';
 
 // 5-dars namunasi: AvtoPizza. O'quvchining boti boshqa g'oyada bo'ladi — tuzilma shu.
-const PITSALAR: Record<string, string> = {
-  margarita: 'Margarita',
-  pepperoni: 'Pepperoni',
-  pishloqli: 'Pishloqli',
+// 9-dars v2 (FIKRLAR.md ★): narx tasdiq xabarida ko'rsatiladi — system-prompt.ts dagi narxlar bilan bir xil
+const PITSALAR: Record<string, { nom: string; narx: number }> = {
+  margarita: { nom: 'Margarita', narx: 45000 },
+  pepperoni: { nom: 'Pepperoni', narx: 55000 },
+  pishloqli: { nom: 'Pishloqli', narx: 50000 },
 };
+const narxi = (nom: string | null) =>
+  Object.values(PITSALAR).find((p) => p.nom === nom)?.narx ?? 0;
+const som = (n: number) =>
+  `${n.toLocaleString('ru-RU').replace(/\u00a0/g, ' ')} so'm`;
 
 @Injectable()
 export class TelegramService implements OnModuleInit, OnModuleDestroy {
@@ -74,15 +79,18 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
     // Pitsa tanlandi → manzil so'raydi. Ikki marta bosilsa — qayta so'ramaydi (A3 sinovi)
     this.bot.action(/^pitsa:(.+)$/, async (ctx) => {
       await ctx.answerCbQuery();
-      const nom = PITSALAR[ctx.match[1]];
-      if (!nom) return;
+      const pitsa = PITSALAR[ctx.match[1]];
+      if (!pitsa) return;
+      const nom = pitsa.nom;
       const user = await this.users.topOrYarat(ctx.from.id);
       if (user.holat === 'manzil_kutilmoqda' && user.tanlov === nom) {
         await ctx.reply(`${nom} allaqachon tanlangan. Manzilingizni yozing.`);
         return;
       }
       await this.users.tanlovQoy(user, nom);
-      await ctx.reply(`${nom} — buyurtma qabul qilindi. Manzilingizni yozing.`);
+      await ctx.reply(
+        `${nom} — ${som(pitsa.narx)}. Buyurtma qabul qilindi. Manzilingizni yozing.`,
+      );
     });
 
     // 7-dars: /buyurtmalarim — bazadagi oxirgi 3 ta buyurtma
@@ -141,7 +149,7 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
         await this.users.manzilQoy(user, matn);
         await this.buyurtmalar.yoz(ctx.from.id, user.tanlov ?? '', matn); // 7-dars: alohida jadvalga
         await ctx.reply(
-          `Buyurtma tasdiqlandi: ${user.tanlov} · ${user.manzil}`,
+          `Buyurtma tasdiqlandi: ${user.tanlov} — ${som(narxi(user.tanlov))} · ${user.manzil}`,
         );
         return;
       }

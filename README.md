@@ -54,6 +54,7 @@ src/api/app.module.ts       modullarni bir joyga yig'adi (4a-Moduldagi kabi)
 src/api/app.controller.ts   GET /  →  «Bot ishlayapti» (hosting tekshiradi)
 src/api/telegram/           bot: /start va javoblar — asosiy ish shu yerda; telegram.controller.ts — webhook (7-dars)
 src/api/buyurtma/           buyurtmalar jadvali (7-dars)
+FIKRLAR.md                  foydalanuvchi fikrlari va iteratsiyalar (9-dars)
 src/api/ai/                 Gemini: system-prompt.ts (6-dars) — botingizning xarakteri shu yerda
 src/core/entity/            baza jadvallari: users (4-dars)
 src/api/user/               users bilan ishlash: topish, ism saqlash
