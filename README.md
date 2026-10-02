@@ -52,7 +52,9 @@ src/config/index.ts         .env dan sozlamalarni o'qiydi
 src/api/app.module.ts       modullarni bir joyga yig'adi (4a-Moduldagi kabi)
 src/api/app.controller.ts   GET /  →  «Bot ishlayapti» (hosting tekshiradi)
 src/api/telegram/           bot: /start va javoblar — asosiy ish shu yerda
-src/core/entity/            baza jadvallari (4-darsdan)
+src/core/entity/            baza jadvallari: users (4-dars)
+src/api/user/               users bilan ishlash: topish, ism saqlash
+src/infrastructure/         bazaga ulanish (DATABASE_URL)
 ```
 
 ## Xatolar
@@ -60,6 +62,7 @@ src/core/entity/            baza jadvallari (4-darsdan)
 | Terminalda nima chiqdi | Sabab | Nima qilasiz |
 |---|---|---|
 | `BOT_TOKEN topilmadi` | `.env` yo'q yoki bo'sh | 3-qadam |
+| `DATABASE_URL topilmadi` | 4-darsdan baza kerak | Neon URL ni `.env` ga yozing |
 | `401: Unauthorized` | token noto'g'ri nusxalangan | @BotFather'dan qayta oling |
 | `409: Conflict` | bitta bot ikki joyda ishlayapti | eski terminalni yoping |
 | bot jim | «Telegram bot ulandi» chiqmagan | terminaldagi xatoni o'qing |

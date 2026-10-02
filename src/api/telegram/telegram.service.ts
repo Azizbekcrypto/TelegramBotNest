@@ -1,10 +1,13 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { Markup, Telegraf } from 'telegraf';
 import { config } from '../../config';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class TelegramService implements OnModuleInit, OnModuleDestroy {
   private bot: Telegraf;
+
+  constructor(private readonly users: UserService) {}
 
   async onModuleInit() {
     if (!config.BOT_TOKEN) {
@@ -14,10 +17,18 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
     }
     this.bot = new Telegraf(config.BOT_TOKEN);
 
-    // /start — bot bilan birinchi uchrashuv
-    this.bot.start((ctx) =>
-      ctx.reply('Salom! Bot ishlayapti. Menyu uchun /menu ni bosing.'),
-    );
+    // /start — bazada bor bo'lsa ismi bilan salomlashadi, bo'lmasa ism so'raydi
+    this.bot.start(async (ctx) => {
+      const user = await this.users.topOrYarat(ctx.from.id);
+      if (user.ism) {
+        await ctx.reply(
+          `Yana salom, ${user.ism}! Menyu uchun /menu ni bosing.`,
+        );
+        return;
+      }
+      await this.users.holatQoy(user, 'ism_kutilmoqda');
+      await ctx.reply('Salom! Ismingiz nima?');
+    });
 
     // /menu — ikkita inline tugma
     this.bot.command('menu', (ctx) =>
@@ -41,10 +52,18 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
       await ctx.reply('/start — boshlash\n/menu — tugmalar');
     });
 
-    // Boshqa har qanday matn — fallback
-    this.bot.on('text', (ctx) =>
-      ctx.reply('Bu buyruqni bilmayman. /menu ni bosing.'),
-    );
+    // Matn keldi — holatga qarab: ism kutilayotgan bo'lsa saqlaydi, bo'lmasa fallback
+    this.bot.on('text', async (ctx) => {
+      const user = await this.users.topOrYarat(ctx.from.id);
+      if (user.holat === 'ism_kutilmoqda') {
+        await this.users.ismQoy(user, ctx.message.text.trim());
+        await ctx.reply(
+          `Xush kelibsiz, ${user.ism}! Endi sizni eslab qolaman.`,
+        );
+        return;
+      }
+      await ctx.reply('Bu buyruqni bilmayman. /menu ni bosing.');
+    });
 
     this.bot
       .launch(() => console.log('Telegram bot ulandi'))
@@ -58,6 +77,10 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
   }
 
   onModuleDestroy() {
-    this.bot?.stop('server tugadi');
+    try {
+      this.bot?.stop('server tugadi');
+    } catch {
+      // bot ulanmagan bo'lsa, to'xtatadigan narsa yo'q
+    }
   }
 }
