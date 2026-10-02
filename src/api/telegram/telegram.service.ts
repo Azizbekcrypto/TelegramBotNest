@@ -4,19 +4,11 @@ import type { Update } from 'telegraf/types';
 import { config } from '../../config';
 import { UserService } from '../user/user.service';
 import { AiService } from '../ai/ai.service';
+import { AgentService } from '../ai/agent.service';
 import { BuyurtmaService } from '../buyurtma/buyurtma.service';
 
 // 5-dars namunasi: AvtoPizza. O'quvchining boti boshqa g'oyada bo'ladi — tuzilma shu.
-// 9-dars v2 (FIKRLAR.md ★): narx tasdiq xabarida ko'rsatiladi — system-prompt.ts dagi narxlar bilan bir xil
-const PITSALAR: Record<string, { nom: string; narx: number }> = {
-  margarita: { nom: 'Margarita', narx: 45000 },
-  pepperoni: { nom: 'Pepperoni', narx: 55000 },
-  pishloqli: { nom: 'Pishloqli', narx: 50000 },
-};
-const narxi = (nom: string | null) =>
-  Object.values(PITSALAR).find((p) => p.nom === nom)?.narx ?? 0;
-const som = (n: number) =>
-  `${n.toLocaleString('ru-RU').replace(/\u00a0/g, ' ')} so'm`;
+import { PITSALAR, narxi, som } from '../menyu';
 
 @Injectable()
 export class TelegramService implements OnModuleInit, OnModuleDestroy {
@@ -25,6 +17,7 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
   constructor(
     private readonly users: UserService,
     private readonly ai: AiService,
+    private readonly agent: AgentService,
     private readonly buyurtmalar: BuyurtmaService,
   ) {}
 
@@ -153,8 +146,10 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
         );
         return;
       }
-      // 6-dars: erkin savol — AI javob beradi (system prompt bilan); kalit yo'q bo'lsa — eski fallback
-      const aiJavob = await this.ai.javob(matn);
+      // 10-dars: erkin xabar — agent (asboblar bilan); 6-dars AiService ham qoladi (agent null qaytarsa)
+      const aiJavob =
+        (await this.agent.javob(ctx.from.id, matn)) ??
+        (await this.ai.javob(matn));
       await ctx.reply(aiJavob ?? 'Bu buyruqni bilmayman. /menu ni bosing.');
     });
 

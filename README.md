@@ -55,7 +55,8 @@ src/api/app.controller.ts   GET /  →  «Bot ishlayapti» (hosting tekshiradi)
 src/api/telegram/           bot: /start va javoblar — asosiy ish shu yerda; telegram.controller.ts — webhook (7-dars)
 src/api/buyurtma/           buyurtmalar jadvali (7-dars)
 FIKRLAR.md                  foydalanuvchi fikrlari va iteratsiyalar (9-dars)
-src/api/ai/                 Gemini: system-prompt.ts (6-dars) — botingizning xarakteri shu yerda
+src/api/ai/                 Gemini: system-prompt.ts (6-dars), agent.service.ts — asboblar checkOrder/saveOrder (10-dars)
+src/api/menyu.ts            menyu va narxlar — bitta joyda
 src/core/entity/            baza jadvallari: users (4-dars)
 src/api/user/               users bilan ishlash: topish, ism saqlash
 src/infrastructure/         bazaga ulanish (DATABASE_URL)
