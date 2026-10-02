@@ -52,6 +52,7 @@ src/config/index.ts         .env dan sozlamalarni o'qiydi
 src/api/app.module.ts       modullarni bir joyga yig'adi (4a-Moduldagi kabi)
 src/api/app.controller.ts   GET /  →  «Bot ishlayapti» (hosting tekshiradi)
 src/api/telegram/           bot: /start va javoblar — asosiy ish shu yerda
+src/api/ai/                 Gemini: system-prompt.ts (6-dars) — botingizning xarakteri shu yerda
 src/core/entity/            baza jadvallari: users (4-dars)
 src/api/user/               users bilan ishlash: topish, ism saqlash
 src/infrastructure/         bazaga ulanish (DATABASE_URL)

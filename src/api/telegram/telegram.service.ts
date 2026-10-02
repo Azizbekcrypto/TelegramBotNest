@@ -2,6 +2,7 @@ import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { Context, Markup, Telegraf } from 'telegraf';
 import { config } from '../../config';
 import { UserService } from '../user/user.service';
+import { AiService } from '../ai/ai.service';
 
 // 5-dars namunasi: AvtoPizza. O'quvchining boti boshqa g'oyada bo'ladi — tuzilma shu.
 const PITSALAR: Record<string, string> = {
@@ -14,7 +15,10 @@ const PITSALAR: Record<string, string> = {
 export class TelegramService implements OnModuleInit, OnModuleDestroy {
   private bot: Telegraf;
 
-  constructor(private readonly users: UserService) {}
+  constructor(
+    private readonly users: UserService,
+    private readonly ai: AiService,
+  ) {}
 
   async onModuleInit() {
     if (!config.BOT_TOKEN) {
@@ -117,7 +121,9 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
         );
         return;
       }
-      await ctx.reply('Bu buyruqni bilmayman. /menu ni bosing.');
+      // 6-dars: erkin savol — AI javob beradi (system prompt bilan); kalit yo'q bo'lsa — eski fallback
+      const aiJavob = await this.ai.javob(matn);
+      await ctx.reply(aiJavob ?? 'Bu buyruqni bilmayman. /menu ni bosing.');
     });
 
     this.bot
