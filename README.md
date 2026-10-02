@@ -1,0 +1,70 @@
+# TelegramBotNest
+
+CoddyCamp 5-Modul uchun bot qolipi: NestJS + Telegraf + PostgreSQL + Gemini.
+3-darsda bir marta yuklab olasiz, 10-darsgacha botingiz shu papkada o'sadi.
+
+## 5 daqiqada ishga tushirish
+
+1. Yuklab oling (clone) va papkaga kiring:
+   ```bash
+   git clone https://github.com/Azizbekcrypto/TelegramBotNest.git
+   cd TelegramBotNest
+   ```
+2. Kutubxonalarni o'rnating:
+   ```bash
+   npm install
+   ```
+3. `.env.example` faylini nusxalab `.env` deb nomlang. `BOT_TOKEN=` qatoriga
+   @BotFather bergan tokenni yozing.
+4. Ishga tushiring:
+   ```bash
+   npm run start:dev
+   ```
+   Terminalda «Telegram bot ulandi» chiqadi.
+5. Telegramda botingizni oching, `/start` bosing. Javob: «Salom! Bot ishlayapti.»
+6. Papkani Antigravity'da oching. Keyingi qadamlar — darsda.
+
+## Darslar va teglar
+
+Har dars oxiridagi tayyor holat teg bilan saqlanadi. Dars tugagach teg paydo bo'ladi.
+
+| Dars | Bot nimani o'rganadi | Teg |
+|---|---|---|
+| 3 | menyu tugmalari | `dars-03-done` |
+| 4 | ismingizni eslaydi (PostgreSQL) | `dars-04-done` |
+| 5 | o'z g'oyangiz (namuna: AvtoPizza) | `dars-05-done` |
+| 6 | AI javob beradi (Gemini) | `dars-06-done` |
+| 7 | baza + 24/7 hosting | `dars-07-done` |
+| 9 | fidbekdan keyin tuzatish | `dars-09-done` |
+| 10 | agent: 2 ta asbob | `dars-10-done` |
+
+Ortda qolsangiz, mentor bilan tayyor holatga o'ting:
+```bash
+git checkout -f dars-04-done
+```
+Diqqat: o'zingiz yozgan kod o'chadi. Kerak bo'lsa, oldin papkani nusxalab qo'ying.
+
+## Papkalar
+
+```
+src/main.ts                 serverni yoqadi
+src/config/index.ts         .env dan sozlamalarni o'qiydi
+src/api/app.module.ts       modullarni bir joyga yig'adi (4a-Moduldagi kabi)
+src/api/app.controller.ts   GET /  →  «Bot ishlayapti» (hosting tekshiradi)
+src/api/telegram/           bot: /start va javoblar — asosiy ish shu yerda
+src/core/entity/            baza jadvallari (4-darsdan)
+```
+
+## Xatolar
+
+| Terminalda nima chiqdi | Sabab | Nima qilasiz |
+|---|---|---|
+| `BOT_TOKEN topilmadi` | `.env` yo'q yoki bo'sh | 3-qadam |
+| `401: Unauthorized` | token noto'g'ri nusxalangan | @BotFather'dan qayta oling |
+| `409: Conflict` | bitta bot ikki joyda ishlayapti | eski terminalni yoping |
+| bot jim | «Telegram bot ulandi» chiqmagan | terminaldagi xatoni o'qing |
+
+## .env — hech kimga bermang
+
+Token — botingizning kaliti. `.env` git'ga tushmaydi (`.gitignore`da).
+Chatga, skrinshotga, guruhga yozmang. Tarqalib ketsa, @BotFather'da `/revoke`.
