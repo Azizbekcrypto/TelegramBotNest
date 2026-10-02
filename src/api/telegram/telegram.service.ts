@@ -1,5 +1,5 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-import { Telegraf } from 'telegraf';
+import { Markup, Telegraf } from 'telegraf';
 import { config } from '../../config';
 
 @Injectable()
@@ -15,11 +15,35 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
     this.bot = new Telegraf(config.BOT_TOKEN);
 
     // /start — bot bilan birinchi uchrashuv
-    this.bot.start((ctx) => ctx.reply('Salom! Bot ishlayapti.'));
+    this.bot.start((ctx) =>
+      ctx.reply('Salom! Bot ishlayapti. Menyu uchun /menu ni bosing.'),
+    );
 
-    // Boshqa har qanday matn — hozircha shu javob
+    // /menu — ikkita inline tugma
+    this.bot.command('menu', (ctx) =>
+      ctx.reply(
+        'Nima qilamiz?',
+        Markup.inlineKeyboard([
+          Markup.button.callback('🍕 Pitsa', 'pizza'),
+          Markup.button.callback('❓ Yordam', 'help'),
+        ]),
+      ),
+    );
+
+    // Tugma bosildi — callback keladi, uni bot.action ushlaydi
+    this.bot.action('pizza', async (ctx) => {
+      await ctx.answerCbQuery();
+      await ctx.reply('Pitsa tanlandi. Keyingi darsda buyurtma saqlanadi.');
+    });
+
+    this.bot.action('help', async (ctx) => {
+      await ctx.answerCbQuery();
+      await ctx.reply('/start — boshlash\n/menu — tugmalar');
+    });
+
+    // Boshqa har qanday matn — fallback
     this.bot.on('text', (ctx) =>
-      ctx.reply('Hali bu buyruqni bilmayman. /start ni bosing.'),
+      ctx.reply('Bu buyruqni bilmayman. /menu ni bosing.'),
     );
 
     this.bot
