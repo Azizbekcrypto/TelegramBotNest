@@ -53,6 +53,11 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
       ctx.reply('/start — boshlash · /menu — pitsalar · /buyurtma — buyurtmam'),
     );
 
+    // 6-Modul 8-dars: /id — chat raqami (.env dagi ADMIN_CHAT_ID uchun)
+    this.bot.command('id', (ctx) =>
+      ctx.reply(`Chat raqamingiz: ${ctx.chat.id}`),
+    );
+
     // /menu va «🍕 Menyu» — bir xil javob
     const menyu = (ctx: Context) =>
       ctx.reply(

@@ -69,9 +69,9 @@ ikkinchisida sayt (`cd web` → `npm install` → `npm run dev`, 5173-port).
 src/main.ts                 serverni yoqadi
 src/config/index.ts         .env dan sozlamalarni o'qiydi
 src/api/app.module.ts       modullarni bir joyga yig'adi (4a-Moduldagi kabi)
-src/api/app.controller.ts   GET /  →  «Bot ishlayapti» (hosting tekshiradi)
+src/api/app.controller.ts   GET /  →  «Bot ishlayapti» (hosting tekshiradi); GET /menyu, POST /savol (6-Modul 8-dars)
 src/api/telegram/           bot: /start va javoblar — asosiy ish shu yerda; telegram.controller.ts — webhook (7-dars)
-src/api/buyurtma/           buyurtmalar jadvali (7-dars)
+src/api/buyurtma/           buyurtmalar jadvali (7-dars); buyurtma.controller.ts — POST /buyurtma, adminga xabar (6-Modul 8-dars)
 FIKRLAR.md                  foydalanuvchi fikrlari va iteratsiyalar (9-dars)
 web/                        sayt — React (6-Modul 8-dars), localhost:5173
 src/api/ai/                 Gemini: system-prompt.ts (6-dars), agent.service.ts — asboblar checkOrder/saveOrder (10-dars), getOrders (6-Modul 4-dars)
@@ -103,6 +103,8 @@ Laptopda yana ishlasangiz (`npm run start:dev`), polling webhook'ni o'chiradi �
 | `401: Unauthorized` | token noto'g'ri nusxalangan | @BotFather'dan qayta oling |
 | `409: Conflict` | bitta bot ikki joyda ishlayapti | eski terminalni yoping |
 | bot jim | «Telegram bot ulandi» chiqmagan | terminaldagi xatoni o'qing |
+| saytda `Failed to fetch` | Backend ishlamayapti, manzil noto'g'ri yoki CORS yoqilmagan | 1-terminalni tekshiring; `web/src/App.jsx` dagi `BACKEND` va `src/main.ts` dagi CORS |
+| admin xabar olmadi | `.env` da `ADMIN_CHAT_ID` bo'sh | botga `/id` yuboring, raqamni `.env` ga yozing, Backend'ni qayta yoqing |
 | serverdagi bot jim | laptopda bot ishlayapti (polling webhook'ni o'chirdi) | laptopdagini to'xtating, `git push` yoki Render'da «Manual Deploy» |
 
 ## .env — hech kimga bermang
