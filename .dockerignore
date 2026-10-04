@@ -1,0 +1,6 @@
+# Serverga faqat Backend boradi: sayt (web/) va telefon ilovasi (mobile/) laptopda ishlaydi
+node_modules
+dist
+.env
+web
+mobile

@@ -7,3 +7,9 @@
 .DS_Store
 /.idea
 /.vscode
+
+# 6-Modul: sayt (web/) va telefon ilovasi (mobile/) — kutubxonalar git'ga tushmaydi
+web/node_modules
+web/dist
+mobile/node_modules
+mobile/.expo

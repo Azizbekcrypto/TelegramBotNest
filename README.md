@@ -2,6 +2,7 @@
 
 CoddyCamp 5-Modul uchun bot qolipi: NestJS + Telegraf + PostgreSQL + Gemini.
 3-darsda bir marta yuklab olasiz, 10-darsgacha botingiz shu papkada o'sadi.
+6-Modulda shu Backend'ga sayt (`web/`, 8-dars) va telefon ilovasi (`mobile/`, 9–11-darslar) ulanadi.
 
 ## 5 daqiqada ishga tushirish
 
@@ -50,6 +51,7 @@ Diqqat: o'zingiz yozgan kod o'chadi. Kerak bo'lsa, oldin papkani nusxalab qo'yin
 | Dars | Nima qo'shiladi | Teglar |
 |---|---|---|
 | 4 | agentga uchinchi asbob `getOrders` (faqat o'qiydi) | `dars-6-04-start` · `dars-6-04-done` |
+| 8 | sayt (`web/`): menyu, buyurtma, AI — bitta Backend orqali | `dars-6-08-start` · `dars-6-08-done` |
 
 Repo'ni 5-Modulda fork qilgansiz — 6-Modul teglari sizning nusxangizda yo'q.
 Ortda qolsangiz, avval teglarni asosiy repo'dan oling, keyin tayyor holatga o'ting:
@@ -57,6 +59,9 @@ Ortda qolsangiz, avval teglarni asosiy repo'dan oling, keyin tayyor holatga o'ti
 git fetch https://github.com/Azizbekcrypto/TelegramBotNest --tags
 git checkout -f dars-6-04-done
 ```
+
+8-darsdan ikkita terminal ishlaydi: birinchisida Backend (`npm run start:dev`, 3000-port),
+ikkinchisida sayt (`cd web` → `npm install` → `npm run dev`, 5173-port).
 
 ## Papkalar
 
@@ -68,6 +73,7 @@ src/api/app.controller.ts   GET /  →  «Bot ishlayapti» (hosting tekshiradi)
 src/api/telegram/           bot: /start va javoblar — asosiy ish shu yerda; telegram.controller.ts — webhook (7-dars)
 src/api/buyurtma/           buyurtmalar jadvali (7-dars)
 FIKRLAR.md                  foydalanuvchi fikrlari va iteratsiyalar (9-dars)
+web/                        sayt — React (6-Modul 8-dars), localhost:5173
 src/api/ai/                 Gemini: system-prompt.ts (6-dars), agent.service.ts — asboblar checkOrder/saveOrder (10-dars), getOrders (6-Modul 4-dars)
 src/api/menyu.ts            menyu va narxlar — bitta joyda
 src/core/entity/            baza jadvallari: users (4-dars)
