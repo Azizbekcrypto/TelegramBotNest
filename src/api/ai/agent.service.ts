@@ -14,7 +14,9 @@ import { PITSALAR, narxi, som } from '../menyu';
 // 10-dars: AI-agent — maqsad + chegara + ikki asbob. Keyingi qadamni model tanlaydi, ishni asbob (bizning funksiya) bajaradi.
 const MAQSAD = `
 MAQSAD: Mijoz buyurtmasini qabul qilib, bazaga yozish.
+Mijoz o'z buyurtmalari haqida so'rasa — getOrders bilan o'qib, javob ber.
 CHEGARA: Taom borligini checkOrder bilan tekshirmasdan saveOrder chaqirilmasin. Manzil bo'lmasa — so'ra.
+getOrders faqat o'qiydi: buyurtmani o'zgartirmaydi va o'chirmaydi.
 Asbob natijasini olgach, mijozga qisqa o'zbekcha javob yoz.`;
 
 const ASBOBLAR: FunctionDeclaration[] = [
@@ -39,6 +41,12 @@ const ASBOBLAR: FunctionDeclaration[] = [
       },
       required: ['taom', 'soni', 'manzil'],
     },
+  },
+  // 6-Modul 4-dars: uchinchi asbob — faqat o'qiydi (parametrsiz: mijoz kimligini kod biladi)
+  {
+    name: 'getOrders',
+    description:
+      "Mijozning oxirgi buyurtmalarini Database'dan o'qiydi (faqat o'qiydi)",
   },
 ];
 
@@ -79,6 +87,13 @@ export class AgentService {
       await this.buyurtmalar.yoz(telegramId, `${soni} × ${taom}`, manzil);
       console.log(`saveOrder → ${soni} × ${taom}, ${manzil}: saqlandi`);
       return { saqlandi: true, jami: narxi(taom) * soni };
+    }
+    if (nom === 'getOrders') {
+      const list = await this.buyurtmalar.oxirgilar(telegramId);
+      console.log(`getOrders → ${list.length} ta buyurtma`);
+      return {
+        buyurtmalar: list.map((b) => ({ pitsa: b.pitsa, manzil: b.manzil })),
+      };
     }
     return { xato: "bunday asbob yo'q" };
   }
