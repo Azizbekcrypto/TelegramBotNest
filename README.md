@@ -52,6 +52,7 @@ Diqqat: o'zingiz yozgan kod o'chadi. Kerak bo'lsa, oldin papkani nusxalab qo'yin
 |---|---|---|
 | 4 | agentga uchinchi asbob `getOrders` (faqat o'qiydi) | `dars-6-04-start` · `dars-6-04-done` |
 | 8 | sayt (`web/`): menyu, buyurtma, AI — bitta Backend orqali | `dars-6-08-start` · `dars-6-08-done` |
+| 9 | telefon ilovasi (`mobile/`, Expo): menyu Backend'dan | `dars-6-09-start` · `dars-6-09-done` |
 
 Repo'ni 5-Modulda fork qilgansiz — 6-Modul teglari sizning nusxangizda yo'q.
 Ortda qolsangiz, avval teglarni asosiy repo'dan oling, keyin tayyor holatga o'ting:
@@ -62,6 +63,7 @@ git checkout -f dars-6-04-done
 
 8-darsdan ikkita terminal ishlaydi: birinchisida Backend (`npm run start:dev`, 3000-port),
 ikkinchisida sayt (`cd web` → `npm install` → `npm run dev`, 5173-port).
+9-darsdan telefon ilovasi ham: `cd mobile` → `npm install` → `npx expo start`, telefonda Expo Go bilan QR (telefon va kompyuter bitta Wi-Fi'da).
 
 ## Papkalar
 
@@ -74,6 +76,7 @@ src/api/telegram/           bot: /start va javoblar — asosiy ish shu yerda; te
 src/api/buyurtma/           buyurtmalar jadvali (7-dars); buyurtma.controller.ts — POST /buyurtma, adminga xabar (6-Modul 8-dars)
 FIKRLAR.md                  foydalanuvchi fikrlari va iteratsiyalar (9-dars)
 web/                        sayt — React (6-Modul 8-dars), localhost:5173
+mobile/                     telefon ilovasi — React Native + Expo (6-Modul 9–11-darslar); config.js — Backend manzili (BACKEND)
 src/api/ai/                 Gemini: system-prompt.ts (6-dars), agent.service.ts — asboblar checkOrder/saveOrder (10-dars), getOrders (6-Modul 4-dars)
 src/api/menyu.ts            menyu va narxlar — bitta joyda
 src/core/entity/            baza jadvallari: users (4-dars)
