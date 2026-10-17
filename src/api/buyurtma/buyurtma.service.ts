@@ -14,7 +14,7 @@ export class BuyurtmaService {
     @InjectRepository(Buyurtma) private readonly repo: Repository<Buyurtma>,
   ) {}
 
-  // manba: 'bot' (bot va agent) · 'sayt' (8-dars)
+  // manba: 'bot' (bot va agent) · 'sayt' (8-dars) · 'mobil' (11-dars)
   yoz(
     telegramId: number | null,
     pitsa: string,

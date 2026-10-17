@@ -54,6 +54,7 @@ Diqqat: o'zingiz yozgan kod o'chadi. Kerak bo'lsa, oldin papkani nusxalab qo'yin
 | 8 | sayt (`web/`): menyu, buyurtma, AI — bitta Backend orqali | `dars-6-08-start` · `dars-6-08-done` |
 | 9 | telefon ilovasi (`mobile/`, Expo): menyu Backend'dan | `dars-6-09-start` · `dars-6-09-done` |
 | 10 | ilovada ikki ekran: Menyu (FlatList) → Tafsilot (Stack Navigator) | `dars-6-10-start` · `dars-6-10-done` |
+| 11 | mobil: savat va buyurtma — `POST /buyurtma` (manba `mobil`), admin xabari | `dars-6-11-start` · `dars-6-11-done` |
 
 Repo'ni 5-Modulda fork qilgansiz — 6-Modul teglari sizning nusxangizda yo'q.
 Ortda qolsangiz, avval teglarni asosiy repo'dan oling, keyin tayyor holatga o'ting:
@@ -75,11 +76,12 @@ src/config/index.ts         .env dan sozlamalarni o'qiydi
 src/api/app.module.ts       modullarni bir joyga yig'adi (4a-Moduldagi kabi)
 src/api/app.controller.ts   GET /  →  «Bot ishlayapti» (hosting tekshiradi); GET /menyu, POST /savol (6-Modul 8-dars)
 src/api/telegram/           bot: /start va javoblar — asosiy ish shu yerda; telegram.controller.ts — webhook (7-dars)
-src/api/buyurtma/           buyurtmalar jadvali (7-dars); buyurtma.controller.ts — POST /buyurtma, adminga xabar (6-Modul 8-dars)
+src/api/buyurtma/           buyurtmalar jadvali (7-dars); buyurtma.controller.ts — POST /buyurtma, adminga xabar (6-Modul 8-dars), manba body'dan (11-dars)
 FIKRLAR.md                  foydalanuvchi fikrlari va iteratsiyalar (9-dars)
 web/                        sayt — React (6-Modul 8-dars), localhost:5173
 mobile/                     telefon ilovasi — React Native + Expo (6-Modul 9–11-darslar); config.js — Backend manzili (BACKEND)
-mobile/ekranlar/            ilova ekranlari: Menyu.js, Tafsilot.js (10-dars); App.js — ular orasidagi navigatsiya (Stack)
+mobile/ekranlar/            ilova ekranlari: Menyu.js, Tafsilot.js (10-dars), Savat.js, Buyurtma.js (11-dars); App.js — navigatsiya (Stack)
+mobile/savat.js             savat — hamma ekranlar uchun bitta (11-dars)
 src/api/ai/                 Gemini: system-prompt.ts (6-dars), agent.service.ts — asboblar checkOrder/saveOrder (10-dars), getOrders (6-Modul 4-dars)
 src/api/menyu.ts            menyu va narxlar — bitta joyda
 src/core/entity/            baza jadvallari: users (4-dars)

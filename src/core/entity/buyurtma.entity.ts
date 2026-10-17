@@ -14,7 +14,7 @@ export class Buyurtma extends BaseEntity {
   @Column({ type: 'varchar' })
   manzil: string;
 
-  // 6-Modul 8-dars: buyurtma qaysi kirish yo'lidan keldi — 'bot' · 'sayt' (11-darsda 'mobil'). Eski qatorlar — 'bot'
+  // 6-Modul 8-dars: buyurtma qaysi kirish yo'lidan keldi — 'bot' · 'sayt' · 'mobil' (11-dars). Eski qatorlar — 'bot'
   @Column({ type: 'varchar', default: 'bot' })
   manba: string;
 }
