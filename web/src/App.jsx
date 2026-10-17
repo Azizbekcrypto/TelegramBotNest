@@ -27,7 +27,7 @@ export default function App() {
       const r = await fetch(BACKEND + '/buyurtma', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ taom, manzil }),
+        body: JSON.stringify({ taom, manzil, manba: 'sayt' }),
       });
       const d = await r.json();
       setXabar(r.ok ? 'Buyurtma qabul qilindi' : d.message);

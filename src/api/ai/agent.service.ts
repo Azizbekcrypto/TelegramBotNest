@@ -84,7 +84,12 @@ export class AgentService {
       const manzil = String(args.manzil ?? '');
       if (narxi(taom) === 0)
         return { saqlandi: false, sabab: "taom menyuda yo'q" }; // CHEGARA — kodda ham
-      await this.buyurtmalar.yoz(telegramId, `${soni} × ${taom}`, manzil);
+      await this.buyurtmalar.yoz(
+        telegramId,
+        `${soni} × ${taom}`,
+        manzil,
+        'bot',
+      );
       console.log(`saveOrder → ${soni} × ${taom}, ${manzil}: saqlandi`);
       return { saqlandi: true, jami: narxi(taom) * soni };
     }

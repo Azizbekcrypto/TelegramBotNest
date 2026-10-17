@@ -145,7 +145,7 @@ export class TelegramService implements OnModuleInit, OnModuleDestroy {
       }
       if (user.holat === 'manzil_kutilmoqda') {
         await this.users.manzilQoy(user, matn);
-        await this.buyurtmalar.yoz(ctx.from.id, user.tanlov ?? '', matn); // 7-dars: alohida jadvalga
+        await this.buyurtmalar.yoz(ctx.from.id, user.tanlov ?? '', matn, 'bot'); // 7-dars: alohida jadvalga
         await ctx.reply(
           `Buyurtma tasdiqlandi: ${user.tanlov} — ${som(narxi(user.tanlov))} · ${user.manzil}`,
         );
