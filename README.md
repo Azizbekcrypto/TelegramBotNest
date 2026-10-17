@@ -55,6 +55,7 @@ Diqqat: o'zingiz yozgan kod o'chadi. Kerak bo'lsa, oldin papkani nusxalab qo'yin
 | 9 | telefon ilovasi (`mobile/`, Expo): menyu Backend'dan | `dars-6-09-start` · `dars-6-09-done` |
 | 10 | ilovada ikki ekran: Menyu (FlatList) → Tafsilot (Stack Navigator) | `dars-6-10-start` · `dars-6-10-done` |
 | 11 | mobil: savat va buyurtma — `POST /buyurtma` (manba `mobil`), admin xabari | `dars-6-11-start` · `dars-6-11-done` |
+| 13 | to'liq tizim: test jadvali (`TEST.md`), admin xabari hamma yo'l uchun bitta joyda, Backend serverda | `dars-6-13-start` · `dars-6-13-done` |
 
 Repo'ni 5-Modulda fork qilgansiz — 6-Modul teglari sizning nusxangizda yo'q.
 Ortda qolsangiz, avval teglarni asosiy repo'dan oling, keyin tayyor holatga o'ting:
@@ -76,8 +77,9 @@ src/config/index.ts         .env dan sozlamalarni o'qiydi
 src/api/app.module.ts       modullarni bir joyga yig'adi (4a-Moduldagi kabi)
 src/api/app.controller.ts   GET /  →  «Bot ishlayapti» (hosting tekshiradi); GET /menyu, POST /savol (6-Modul 8-dars)
 src/api/telegram/           bot: /start va javoblar — asosiy ish shu yerda; telegram.controller.ts — webhook (7-dars)
-src/api/buyurtma/           buyurtmalar jadvali (7-dars); buyurtma.controller.ts — POST /buyurtma, adminga xabar (6-Modul 8-dars), manba body'dan (11-dars)
+src/api/buyurtma/           buyurtmalar jadvali (7-dars); buyurtma.controller.ts — POST /buyurtma (6-Modul 8-dars), manba body'dan (11-dars); buyurtma.service.ts — yoz: adminga xabar hamma yo'l uchun (13-dars)
 FIKRLAR.md                  foydalanuvchi fikrlari va iteratsiyalar (9-dars)
+TEST.md                     test jadvali: Web · Mobil · Bot × 4 tekshiruv (6-Modul 13-dars)
 web/                        sayt — React (6-Modul 8-dars), localhost:5173
 mobile/                     telefon ilovasi — React Native + Expo (6-Modul 9–11-darslar); config.js — Backend manzili (BACKEND)
 mobile/ekranlar/            ilova ekranlari: Menyu.js, Tafsilot.js (10-dars), Savat.js, Buyurtma.js (11-dars); App.js — navigatsiya (Stack)
@@ -96,11 +98,15 @@ Bot laptopda ishlasa, laptop yopilganda to'xtaydi. Serverda u laptopsiz ishlaydi
 1. Kodingizni GitHub'dagi nusxangizga yuboring: `git add -A` → `git commit -m "7-dars"` → `git push`.
 2. render.com → **Sign in with GitHub** → **New → Web Service** → o'z `TelegramBotNest` repo'ngiz. Render `Dockerfile`ni o'zi topadi, tarif **Free**.
 3. **Environment** bo'limiga uchta qator: `BOT_TOKEN`, `DATABASE_URL`, `GEMINI_API_KEY` (qiymatlar `.env` dan). `WEBHOOK_URL` yozish shart emas — Render o'zi beradi.
+   6-Modul 13-darsdan to'rtinchi qator: `ADMIN_CHAT_ID` (admin xabari serverda ham kelsin).
 4. **Deploy**. Loglarda «Telegram bot ulandi (webhook)» chiqsin.
 5. Laptopdagi botni to'xtating (Ctrl+C) — bitta token ikki joyda ishlamaydi. Telefondan `/start`.
 
 Bepul server 15 daqiqa jimlikdan keyin uxlaydi; xabar kelganda 30–60 soniyada uyg'onadi va javob beradi.
 Laptopda yana ishlasangiz (`npm run start:dev`), polling webhook'ni o'chiradi — keyin `git push` qiling, Render qayta joylaydi va webhook'ni o'zi tiklaydi.
+
+6-Modul 13-dars: serverga faqat Backend (bot bilan birga) chiqadi. Sayt va ilova laptopdan ishlaydi va serverdagi Backend'ga ulanadi —
+`web/src/App.jsx` va `mobile/config.js` dagi `BACKEND` ga o'z Render manzilingizni yozing (`dars-6-13-done` da namuna: `https://SIZNING-XIZMAT.onrender.com`).
 
 ## Xatolar
 

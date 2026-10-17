@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 
 // 6-Modul 8-dars: Backend manzili — bitta joyda
-const BACKEND = 'http://localhost:3000';
+// 13-dars: Backend serverda (Render) — o'z manzilingizni yozing. Laptopdagi Backend: 'http://localhost:3000'
+const BACKEND = 'https://SIZNING-XIZMAT.onrender.com';
 const XATO = "Server javob bermayapti, birozdan keyin urinib ko'ring";
 const som = (n) => `${String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} so'm`;
 
