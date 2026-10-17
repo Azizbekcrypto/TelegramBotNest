@@ -1,8 +1,8 @@
 import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { BuyurtmaService } from './buyurtma.service';
-import { PITSALAR, som } from '../menyu';
+import { PITSALAR } from '../menyu';
 
-// 6-Modul 8-dars: saytdan buyurtma — Database'ga yoziladi, admin Telegram'da xabar oladi
+// 6-Modul 8-dars: saytdan buyurtma — Database'ga yoziladi, admin Telegram'da xabar oladi (13-dars: xabar yoz ichida)
 // 11-dars: telefon ham shu yo'ldan keladi — manba body'dan ('mobil'), bo'lmasa 'sayt'
 const MANBALAR = ['sayt', 'mobil'];
 
@@ -26,9 +26,6 @@ export class BuyurtmaController {
       : 'sayt';
 
     const b = await this.buyurtmalar.yoz(null, pitsa.nom, manzil, manba);
-    await this.buyurtmalar.adminga(
-      `Yangi buyurtma (${manba}): ${pitsa.nom} — ${som(pitsa.narx)} · ${manzil}`,
-    );
     return { ok: true, id: b.id };
   }
 }

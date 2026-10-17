@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Telegram } from 'telegraf';
 import { Buyurtma } from '../../core/entity/buyurtma.entity';
 import { config } from '../../config';
+import { narxi, som } from '../menyu';
 
 @Injectable()
 export class BuyurtmaService {
@@ -15,13 +16,13 @@ export class BuyurtmaService {
   ) {}
 
   // manba: 'bot' (bot va agent) · 'sayt' (8-dars) · 'mobil' (11-dars)
-  yoz(
+  async yoz(
     telegramId: number | null,
     pitsa: string,
     manzil: string,
     manba = 'bot',
   ): Promise<Buyurtma> {
-    return this.repo.save(
+    const b = await this.repo.save(
       this.repo.create({
         telegram_id: telegramId === null ? null : String(telegramId),
         pitsa,
@@ -29,6 +30,13 @@ export class BuyurtmaService {
         manba,
       }),
     );
+    // 13-dars: admin xabari shu yerda — sayt, mobil, bot va AI buyurtmasi hammasi yoz dan o'tadi.
+    // Oldin xabar faqat POST /buyurtma ichida edi: bot uni chetlab o'tgani uchun admin bot buyurtmasini ko'rmasdi
+    const narx = narxi(pitsa);
+    await this.adminga(
+      `Yangi buyurtma (${manba}): ${pitsa}${narx ? ` — ${som(narx)}` : ''} · ${manzil}`,
+    );
+    return b;
   }
 
   // Oxirgi 3 ta buyurtma — /buyurtmalarim

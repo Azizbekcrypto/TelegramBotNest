@@ -5,9 +5,12 @@ Har katakka ✓ yoki ✗ qo'ying. Serverga chiqargandan keyin (A3) jadvalni qayt
 
 | Kirish yo'li | Yuborildi | Database'da | Admin xabari | Mijozga tasdiq |
 |---|---|---|---|---|
-| Web    |   |   |   |   |
-| Mobil  |   |   |   |   |
-| Bot    |   |   |   |   |
+| Web    | ✓ | ✓ | ✓ | ✓ |
+| Mobil  | ✓ | ✓ | ✓ | ✓ |
+| Bot    | ✓ | ✓ | ✓ | ✓ |
+
+Namuna (AvtoPizza): birinchi sinovda Bot × Admin xabari — ✗ (xabar faqat `POST /buyurtma` ichida edi, bot uni chetlab o'tardi).
+Tuzatish: xabar `BuyurtmaService.yoz` ichiga ko'chdi — endi sayt, mobil, bot va AI buyurtmasi hammasi admin chatiga keladi.
 
 Har ustun nimani tekshiradi:
 
